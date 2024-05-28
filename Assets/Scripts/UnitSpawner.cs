@@ -8,6 +8,7 @@ public class UnitSpawner : MonoBehaviour
     [SerializeField] private int _startUnitsAmount;
 
     private List<Unit> _unitsAvailable = new List<Unit>();
+
     private ObjectPooler<Unit> _pool;
 
     public List<Unit> UnitsAvailable => new(_unitsAvailable);

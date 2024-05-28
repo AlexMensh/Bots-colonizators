@@ -47,6 +47,7 @@ public class Searcher : MonoBehaviour
                     _itemsFound.Add(item);
                 }
             }
+
             yield return _searchDelay;
         }
     }

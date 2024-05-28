@@ -8,7 +8,7 @@ public class UnitAction : MonoBehaviour
     [SerializeField] private Vector3 _pickUpOffset;
 
     private bool _isActive = false;
-    private bool _isPickedUp = false;
+    private bool _isEquipped = false;
     private Unit _unit;
     private Item _item;
 
@@ -24,11 +24,11 @@ public class UnitAction : MonoBehaviour
 
     private void Action()
     {
-        if (_isActive == true && _isPickedUp == false)
+        if (_isActive == true && _isEquipped == false)
         {
             TryToCollect();
         }
-        else if (_isActive == true && _isPickedUp == true)
+        else if (_isActive == true && _isEquipped == true)
         {
             TryToStock();
         }
@@ -68,7 +68,7 @@ public class UnitAction : MonoBehaviour
         _item.transform.parent = gameObject.transform;
         _item.transform.localPosition = Vector3.zero + _pickUpOffset;
 
-        _isPickedUp = true;
+        _isEquipped = true;
     }
 
     private void StockItem()
@@ -78,9 +78,10 @@ public class UnitAction : MonoBehaviour
         if (checkDistance > _interactionDistance)
             return;
 
-        _unit.HomeBase.FinishItemDelivery(_unit);
+        _unit.HomeBase.FinishItemDelivery(_unit, _item);
+        _item = null;
 
-        _isPickedUp = false;
+        _isEquipped = false;
         _isActive = false;
     }
 }

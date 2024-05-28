@@ -4,7 +4,7 @@ using UnityEngine;
 public class Unit : MonoBehaviour
 {
     private UnitAction _unitMover;
-    
+
     public Base HomeBase { get; private set; }
 
     private void Start()

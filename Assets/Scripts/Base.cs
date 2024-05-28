@@ -1,18 +1,19 @@
 using UnityEngine;
-using static UnityEditor.Progress;
 
-[RequireComponent(typeof(Searcher), typeof(UnitSpawner))]
+[RequireComponent(typeof(Searcher), typeof(UnitSpawner), typeof(ScoreCounter))]
 public class Base : MonoBehaviour
 {
+    [SerializeField] private Transform _container;
+
     private Searcher _searcher;
-    private UnitSpawner _spawnerUnit;
-    private ItemSpawner _spawnerItem;
+    private UnitSpawner _unitSpawner;
+    private ScoreCounter _scoreCounter;
 
     private void Awake()
     {
         _searcher = GetComponent<Searcher>();
-        _spawnerUnit = GetComponent<UnitSpawner>();
-        _spawnerItem = GetComponent<ItemSpawner>();
+        _unitSpawner = GetComponent<UnitSpawner>();
+        _scoreCounter = GetComponent<ScoreCounter>();
     }
 
     private void Update()
@@ -25,7 +26,7 @@ public class Base : MonoBehaviour
         if (_searcher.ItemsFound.Count == 0)
             return;
 
-        if (_spawnerUnit.UnitsAvailable.Count == 0)
+        if (_unitSpawner.UnitsAvailable.Count == 0)
             return;
 
         Unit unit = GetFreeUnit();
@@ -35,15 +36,21 @@ public class Base : MonoBehaviour
             StartItemDelivery(unit, item, this);
     }
 
-    public void FinishItemDelivery(Unit unit)
+    public void FinishItemDelivery(Unit unit, Item item)
     {
-        _spawnerUnit.AddUnit(unit);
+        _unitSpawner.AddUnit(unit);
+
+        item.gameObject.SetActive(false);
+        item.transform.parent = _container.transform;
+        item.isFound = false;
+
+        _scoreCounter.AddPoint();
     }
 
     private void StartItemDelivery(Unit unit, Item item, Base homeBase)
     {
         _searcher.RemoveItem(item);
-        _spawnerUnit.RemoveUnit(unit);
+        _unitSpawner.RemoveUnit(unit);
 
         unit.SetDeliveryTask(item);
         unit.SetHomeBase(homeBase);
@@ -51,9 +58,9 @@ public class Base : MonoBehaviour
 
     private Unit GetFreeUnit()
     {
-        if (_spawnerUnit.UnitsAvailable.Count > 0)
+        if (_unitSpawner.UnitsAvailable.Count > 0)
         {
-            return _spawnerUnit.UnitsAvailable[0];
+            return _unitSpawner.UnitsAvailable[0];
         }
         return null;
     }

@@ -121,7 +121,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55099a6063060c4429bee71629a1b45c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 10
+  _speed: 20
   _interactionDistance: 0
   _pickUpOffset: {x: 1, y: 0, z: 0}
 --- !u!114 &4136175016692745173

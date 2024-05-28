@@ -36,17 +36,4 @@ public class ObjectPooler<T> where T : MonoBehaviour
 
         return item;
     }
-
-    public void PutObject(T item)
-    {
-        item.gameObject.SetActive(false);
-    }
-
-    public void Reset()
-    {
-        foreach (var item in _pool)
-        {
-            item?.gameObject.SetActive(false);
-        }
-    }
 }

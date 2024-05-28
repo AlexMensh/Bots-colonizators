@@ -6,6 +6,7 @@ public class ItemSpawner : MonoBehaviour
 {
     [SerializeField] private Transform _container;
     [SerializeField] private Item _prefab;
+
     [SerializeField] private List<SpawnPoint> _spawnPoints;
     [SerializeField] private float _spawnDelay;
 
@@ -21,11 +22,6 @@ public class ItemSpawner : MonoBehaviour
         StartCoroutine(GenerateItems());
     }
 
-    public void RemoveObject(Item item)
-    {
-        _pool.PutObject(item);
-    }
-
     private IEnumerator GenerateItems()
     {
         var wait = new WaitForSeconds(_spawnDelay);
@@ -33,6 +29,7 @@ public class ItemSpawner : MonoBehaviour
         while (enabled)
         {
             SpawnObject();
+
             yield return wait;
         }
     }
