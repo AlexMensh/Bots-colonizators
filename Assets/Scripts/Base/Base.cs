@@ -10,11 +10,12 @@ public class Base : MonoBehaviour
 
     private Searcher _searcher;
     private UnitSpawner _unitSpawner;
+    private int _resourses;
 
     private List<Item> _itemsFound = new List<Item>();
     private List<Unit> _units = new List<Unit>();
 
-    public event Action ScoreChanged;
+    public event Action<int> ScoreChanged;
 
     private void Awake()
     {
@@ -61,7 +62,7 @@ public class Base : MonoBehaviour
     {
         AddUnit(unit);
         ReturnToPool(item);
-        ScoreChanged?.Invoke();
+        AddResourse();
     }
 
     private void StartItemDelivery(Unit unit, Item item)
@@ -107,6 +108,12 @@ public class Base : MonoBehaviour
     private void AddUnit(Unit unit)
     {
         _units.Add(unit);
+    }
+
+    private void AddResourse()
+    {
+        _resourses++;
+        ScoreChanged?.Invoke(_resourses);
     }
 
     private void CreateStartUnitAmount(int startAmount)

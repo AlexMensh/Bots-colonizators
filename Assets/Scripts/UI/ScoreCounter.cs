@@ -7,7 +7,6 @@ public class ScoreCounter : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _scoreText;
 
     private Base _homeBase;
-    private int _score;
 
     private void Awake()
     {
@@ -16,17 +15,16 @@ public class ScoreCounter : MonoBehaviour
 
     private void OnEnable()
     {
-        _homeBase.ScoreChanged += AddPoint;
+        _homeBase.ScoreChanged += SetValue;
     }
 
     private void OnDisable()
     {
-        _homeBase.ScoreChanged -= AddPoint;
+        _homeBase.ScoreChanged -= SetValue;
     }
 
-    public void AddPoint()
+    public void SetValue(int value)
     {
-        _score++;
-        _scoreText.text = _score.ToString();
+        _scoreText.text = value.ToString();
     }
 }
