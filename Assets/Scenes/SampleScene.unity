@@ -1026,7 +1026,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _searchRadius: 50
-  _searchDelay: 1
+  _searchDelay: 0.5
+  _itemLayerMask:
+    serializedVersion: 2
+    m_Bits: 8
 --- !u!114 &1832817090
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1040,6 +1043,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _container: {fileID: 1464114888}
+  _startUnitsAmount: 3
 --- !u!114 &1832817091
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1054,7 +1058,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _container: {fileID: 1464114888}
   _prefab: {fileID: 4136175016692745173, guid: fd09abef3fab85945b3504ed2aaee311, type: 3}
-  _startUnitsAmount: 3
 --- !u!114 &1832817092
 MonoBehaviour:
   m_ObjectHideFlags: 0

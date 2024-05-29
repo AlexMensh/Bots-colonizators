@@ -1,4 +1,5 @@
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 [RequireComponent(typeof(Unit))]
 public class UnitMover : MonoBehaviour
@@ -7,10 +8,10 @@ public class UnitMover : MonoBehaviour
     [SerializeField] private float _interactionDistance;
     [SerializeField] private Vector3 _pickUpOffset;
 
-    private bool _isActive = false;
-    private bool _isEquipped = false;
     private Unit _unit;
     private Item _item;
+    private bool _isActive = false;
+    private bool _isEquipped = false;
 
     private void Start()
     {
@@ -44,7 +45,7 @@ public class UnitMover : MonoBehaviour
     {
         if (_item != null)
         {
-            transform.position = Vector3.MoveTowards(transform.position, _item.transform.position, _speed * Time.deltaTime);
+            MoveTo(_item.transform);
             PickUpItem();
         }
     }
@@ -53,7 +54,7 @@ public class UnitMover : MonoBehaviour
     {
         if (_unit.HomeBase != null)
         {
-            transform.position = Vector3.MoveTowards(transform.position, _unit.HomeBase.transform.position, _speed * Time.deltaTime);
+            MoveTo(_unit.HomeBase.transform);
             StockItem();
         }
     }
@@ -67,7 +68,6 @@ public class UnitMover : MonoBehaviour
 
         _item.transform.parent = gameObject.transform;
         _item.transform.localPosition = Vector3.zero + _pickUpOffset;
-
         _isEquipped = true;
     }
 
@@ -80,8 +80,12 @@ public class UnitMover : MonoBehaviour
 
         _unit.HomeBase.FinishItemDelivery(_unit, _item);
         _item = null;
-
         _isEquipped = false;
         _isActive = false;
+    }
+
+    private void MoveTo(Transform target)
+    {
+        transform.position = Vector3.MoveTowards(transform.position, target.position, _speed * Time.deltaTime);
     }
 }

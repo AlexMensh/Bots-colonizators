@@ -10,10 +10,9 @@ public class Base : MonoBehaviour
 
     private Searcher _searcher;
     private UnitSpawner _unitSpawner;
-    private ScoreCounter _scoreCounter;
 
     private List<Item> _itemsFound = new List<Item>();
-    private List<Unit> _unitsAvailable = new List<Unit>();
+    private List<Unit> _units = new List<Unit>();
 
     public event Action ScoreChanged;
 
@@ -21,7 +20,6 @@ public class Base : MonoBehaviour
     {
         _searcher = GetComponent<Searcher>();
         _unitSpawner = GetComponent<UnitSpawner>();
-        _scoreCounter = GetComponent<ScoreCounter>();
     }
 
     private void OnEnable()
@@ -49,58 +47,51 @@ public class Base : MonoBehaviour
         if (_itemsFound.Count == 0)
             return;
 
-        if (_unitsAvailable.Count == 0)
+        if (_units.Count == 0)
             return;
 
-        Unit unit = GetFreeUnit();
-        Item item = GetFreeItem();
+        Unit unit = GetFreeObject(_units);
+        Item item = GetFreeObject(_itemsFound);
 
         if (unit != null || item != null)
-            StartItemDelivery(unit, item, this);
+            StartItemDelivery(unit, item);
     }
 
     public void FinishItemDelivery(Unit unit, Item item)
     {
         AddUnit(unit);
-
-        item.gameObject.SetActive(false);
-        item.transform.parent = _container.transform;
-        item.isFound = false;
-
+        ReturnToPool(item);
         ScoreChanged?.Invoke();
     }
 
-    private void StartItemDelivery(Unit unit, Item item, Base homeBase)
+    private void StartItemDelivery(Unit unit, Item item)
     {
         RemoveUnit(unit);
         RemoveFoundItem(item);
 
         unit.SetDeliveryTask(item);
-        unit.SetHomeBase(homeBase);
     }
 
-    private Unit GetFreeUnit()
+    private void ReturnToPool(Item item)
     {
-        if (_unitsAvailable.Count > 0)
-        {
-            return _unitsAvailable[0];
-        }
-        return null;
+        item.gameObject.SetActive(false);
+        item.transform.parent = _container.transform;
+        item.IsFound = false;
     }
 
-    private Item GetFreeItem()
+    private T GetFreeObject<T>(List<T> list)
     {
-        if (_itemsFound.Count > 0)
+        if (list.Count > 0)
         {
-            return _itemsFound[0];
+            return list[0];
         }
-        return null;
+        return default;
     }
 
     private void AddFoundItem(Item item)
     {
         _itemsFound.Add(item);
-        item.isFound = true;
+        item.IsFound = true;
     }
 
     private void RemoveFoundItem(Item item)
@@ -108,21 +99,23 @@ public class Base : MonoBehaviour
         _itemsFound.Remove(item);
     }
 
-    public void RemoveUnit(Unit unit)
+    private void RemoveUnit(Unit unit)
     {
-        _unitsAvailable.Remove(unit);
+        _units.Remove(unit);
     }
 
-    public void AddUnit(Unit unit)
+    private void AddUnit(Unit unit)
     {
-        _unitsAvailable.Add(unit);
+        _units.Add(unit);
     }
 
     private void CreateStartUnitAmount(int startAmount)
     {
         for (int i = 0; i < startAmount; i++)
         {
-            _unitsAvailable.Add(_unitSpawner.SpawnObject());
+            Unit unit = _unitSpawner.SpawnObject();
+            unit.SetHomeBase(this);
+            _units.Add(unit);
         }
     }
 }

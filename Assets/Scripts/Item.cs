@@ -3,5 +3,5 @@ using UnityEngine;
 
 public class Item : MonoBehaviour
 {
-    public bool isFound { get; set; } = false;
+    public bool IsFound { get; set; } = false;
 }

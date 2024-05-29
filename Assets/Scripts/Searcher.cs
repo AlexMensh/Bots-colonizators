@@ -1,12 +1,12 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Searcher : MonoBehaviour
 {
     [SerializeField] private float _searchRadius;
     [SerializeField] private float _searchDelay;
+    [SerializeField] private LayerMask _itemLayerMask;
 
     private Coroutine _searchItems;
 
@@ -30,19 +30,21 @@ public class Searcher : MonoBehaviour
 
     private IEnumerator SearchItems()
     {
+        WaitForSeconds wait = new WaitForSeconds(_searchDelay);
+
         while (enabled)
         {
-            Collider[] detectedItems = Physics.OverlapSphere(transform.position, _searchRadius);
+            Collider[] detectedItems = Physics.OverlapSphere(transform.position, _searchRadius, _itemLayerMask);
 
             foreach (var detected in detectedItems)
             {
-                if (detected.TryGetComponent(out Item item) && item.isFound == false)
+                if (detected.TryGetComponent(out Item item) && item.IsFound == false)
                 {
                     ItemFound?.Invoke(item);
                 }
             }
 
-            yield return _searchDelay;
+            yield return wait;
         }
     }
 }
