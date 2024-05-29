@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Unit))]
-public class UnitAction : MonoBehaviour
+public class UnitMover : MonoBehaviour
 {
     [SerializeField] private float _speed;
     [SerializeField] private float _interactionDistance;

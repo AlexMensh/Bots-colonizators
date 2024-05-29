@@ -1,15 +1,15 @@
 using UnityEngine;
 
-[RequireComponent(typeof(UnitAction))]
+[RequireComponent(typeof(UnitMover))]
 public class Unit : MonoBehaviour
 {
-    private UnitAction _unitMover;
+    private UnitMover _unitMover;
 
     public Base HomeBase { get; private set; }
 
     private void Start()
     {
-        _unitMover = GetComponent<UnitAction>();
+        _unitMover = GetComponent<UnitMover>();
     }
 
     public void SetHomeBase(Base homeBase)

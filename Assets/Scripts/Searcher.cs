@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,10 +8,9 @@ public class Searcher : MonoBehaviour
     [SerializeField] private float _searchRadius;
     [SerializeField] private float _searchDelay;
 
-    private List<Item> _itemsFound = new List<Item>();
     private Coroutine _searchItems;
 
-    public List<Item> ItemsFound => new(_itemsFound);
+    public event Action<Item> ItemFound;
 
     private void OnEnable()
     {
@@ -28,11 +28,6 @@ public class Searcher : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, _searchRadius);
     }
 
-    public void RemoveItem(Item item)
-    {
-        _itemsFound.Remove(item);
-    }
-
     private IEnumerator SearchItems()
     {
         while (enabled)
@@ -43,8 +38,7 @@ public class Searcher : MonoBehaviour
             {
                 if (detected.TryGetComponent(out Item item) && item.isFound == false)
                 {
-                    item.isFound = true;
-                    _itemsFound.Add(item);
+                    ItemFound?.Invoke(item);
                 }
             }
 
