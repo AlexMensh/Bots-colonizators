@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Item : MonoBehaviour
 {
-    public bool IsFound { get; set; } = false;
+    public bool IsFound { get; private set; } = false;
 
     public void MarkAsFound()
     {
