@@ -41,6 +41,7 @@ public class Searcher : MonoBehaviour
                 if (detected.TryGetComponent(out Item item) && item.IsFound == false)
                 {
                     ItemFound?.Invoke(item);
+                    item.MarkAsFound();
                 }
             }
 

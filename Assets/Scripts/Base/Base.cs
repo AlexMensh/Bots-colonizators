@@ -92,7 +92,7 @@ public class Base : MonoBehaviour
     private void AddFoundItem(Item item)
     {
         _itemsFound.Add(item);
-        item.IsFound = true;
+        item.ResetFoundStatus();
     }
 
     private void RemoveFoundItem(Item item)
