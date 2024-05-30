@@ -77,7 +77,7 @@ public class Base : MonoBehaviour
     {
         item.gameObject.SetActive(false);
         item.transform.parent = _container.transform;
-        item.IsFound = false;
+        item.ResetFoundStatus();
     }
 
     private T GetFreeObject<T>(List<T> list)
@@ -92,7 +92,7 @@ public class Base : MonoBehaviour
     private void AddFoundItem(Item item)
     {
         _itemsFound.Add(item);
-        item.ResetFoundStatus();
+        item.MarkAsFound();
     }
 
     private void RemoveFoundItem(Item item)

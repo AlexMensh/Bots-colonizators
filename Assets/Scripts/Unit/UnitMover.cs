@@ -20,11 +20,6 @@ public class UnitMover : MonoBehaviour
 
     private void Update()
     {
-        Action();
-    }
-
-    private void Action()
-    {
         if (_isActive == true && _isEquipped == false)
         {
             TryToCollect();
