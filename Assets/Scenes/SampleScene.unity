@@ -986,9 +986,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1464114888}
     - target: {fileID: 5359607324167094989, guid: 1a06af623a4c2a048b7b02d5615bc4fb, type: 3}
+      propertyPath: _items
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5359607324167094989, guid: 1a06af623a4c2a048b7b02d5615bc4fb, type: 3}
       propertyPath: _container
       value: 
       objectReference: {fileID: 1464114888}
+    - target: {fileID: 5359607324167094989, guid: 1a06af623a4c2a048b7b02d5615bc4fb, type: 3}
+      propertyPath: _startUnitAmount
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 5783685304672854640, guid: 1a06af623a4c2a048b7b02d5615bc4fb, type: 3}
       propertyPath: m_Name
       value: Base

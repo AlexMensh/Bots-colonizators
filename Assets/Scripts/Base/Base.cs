@@ -6,11 +6,12 @@ using UnityEngine;
 public class Base : MonoBehaviour
 {
     [SerializeField] private Transform _container;
-    [SerializeField] private int _startUnitsAmount;
+    [SerializeField] private int _items;
+    [SerializeField] private int _startUnitAmount;
 
     private Searcher _searcher;
     private UnitSpawner _unitSpawner;
-    private int _resourses;
+    private int _unitCost = 3;
 
     private List<Item> _itemsFound = new List<Item>();
     private List<Unit> _units = new List<Unit>();
@@ -32,15 +33,15 @@ public class Base : MonoBehaviour
     {
         _searcher.ItemFound -= AddFoundItem;
     }
-
     private void Start()
     {
-        CreateStartUnitAmount(_startUnitsAmount);
+        CreateUnitPool(_startUnitAmount);
     }
 
     private void Update()
     {
         Work();
+        TryCreateUnit();
     }
 
     private void Work()
@@ -112,11 +113,25 @@ public class Base : MonoBehaviour
 
     private void AddResourse()
     {
-        _resourses++;
-        ScoreChanged?.Invoke(_resourses);
+        _items++;
+        ScoreChanged?.Invoke(_items);
     }
 
-    private void CreateStartUnitAmount(int startAmount)
+    private void TryCreateUnit()
+    {
+        if (_items < _unitCost)
+            return;
+
+        _items -= _unitCost;
+
+        Unit unit = _unitSpawner.SpawnObject();
+        unit.SetHomeBase(this);
+        _units.Add(unit);
+
+        ScoreChanged?.Invoke(_items);
+    }
+
+    private void CreateUnitPool(int startAmount)
     {
         for (int i = 0; i < startAmount; i++)
         {
