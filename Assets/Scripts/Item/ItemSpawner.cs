@@ -41,6 +41,7 @@ public class ItemSpawner : MonoBehaviour
         var item = _pool.GetObject();
 
         item.gameObject.SetActive(true);
+        item.transform.parent = _container;
         item.transform.position = _spawnPoints[randomValue].transform.position;
     }
 }

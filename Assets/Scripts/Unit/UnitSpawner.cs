@@ -16,6 +16,7 @@ public class UnitSpawner : MonoBehaviour
     {
         var unit = _pool.GetObject();
         unit.gameObject.SetActive(true);
+        unit.transform.position = transform.position;
 
         return unit;
     }

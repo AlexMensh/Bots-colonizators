@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8815491389100454188}
   - component: {fileID: 4406256605125789747}
   - component: {fileID: 7343378971395236187}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: SpawnPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -79,7 +79,7 @@ GameObject:
   - component: {fileID: 6816340602456515845}
   - component: {fileID: 5957370835612027573}
   - component: {fileID: 4170916720305790620}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: point
   m_TagString: Untagged
   m_Icon: {fileID: 0}
