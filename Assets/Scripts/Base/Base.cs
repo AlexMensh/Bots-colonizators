@@ -9,13 +9,14 @@ public class Base : MonoBehaviour
     [SerializeField] private Transform _container;
     [SerializeField] private Base _prefab;
     [SerializeField] private int _items;
-    [SerializeField] private bool _buildingTask;
+
 
     private Vector3 _buildPosition;
     private Searcher _searcher;
     private UnitSpawner _unitSpawner;
     private int _unitCost = 3;
     private int _baseCost = 5;
+    private bool _buildingTask = false;
 
     private List<Item> _itemsFound = new List<Item>();
     private List<Unit> _units = new List<Unit>();
@@ -31,12 +32,12 @@ public class Base : MonoBehaviour
 
     private void OnEnable()
     {
-            _searcher.ItemFound += AddFoundItem;
+        _searcher.ItemFound += AddFoundItem;
     }
 
     private void OnDisable()
     {
-            _searcher.ItemFound -= AddFoundItem;
+        _searcher.ItemFound -= AddFoundItem;
     }
 
     private void Update()
@@ -79,8 +80,6 @@ public class Base : MonoBehaviour
 
         if (unit != null || item != null)
             StartItemDelivery(unit, item);
-        else
-            return;
     }
 
     private void BuildingTask(Vector3 buildPosition)

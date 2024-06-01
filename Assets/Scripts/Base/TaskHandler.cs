@@ -4,8 +4,8 @@ using UnityEngine;
 public class TaskHandler: MonoBehaviour
 {
     [SerializeField] private Flag _flag;
-    [SerializeField] private bool _isSelected;
 
+    private bool _isSelected = false;
     private Base _base;
 
     private void Awake()

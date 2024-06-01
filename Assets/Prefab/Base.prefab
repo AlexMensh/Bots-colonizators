@@ -364,8 +364,6 @@ MonoBehaviour:
   _prefab: {fileID: 5359607324167094989}
   _items: 0
   _buildingTask: 0
-  _itemsFound: []
-  _units: []
 --- !u!114 &7480093333618244824
 MonoBehaviour:
   m_ObjectHideFlags: 0
