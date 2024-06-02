@@ -1,15 +1,15 @@
 using UnityEngine;
 
-[RequireComponent(typeof(UnitMover))]
+[RequireComponent(typeof(UnitTaskHandler))]
 public class Unit : MonoBehaviour
 {
-    private UnitMover _unitMover;
+    private UnitTaskHandler _unitTaskHandler;
 
     public Base HomeBase { get; private set; }
 
     private void Start()
     {
-        _unitMover = GetComponent<UnitMover>();
+        _unitTaskHandler = GetComponent<UnitTaskHandler>();
     }
 
     public void SetHomeBase(Base homeBase)
@@ -19,6 +19,6 @@ public class Unit : MonoBehaviour
 
     public void SetDeliveryTask(Item item)
     {
-        _unitMover.SetTarget(item);
+        _unitTaskHandler.SetTarget(item);
     }
 }

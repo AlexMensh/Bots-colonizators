@@ -38,10 +38,8 @@ public class ItemSpawner : MonoBehaviour
     {
         int randomValue = Random.Range(0, _spawnPoints.Count);
 
-        var item = _pool.GetObject();
-
+        Item item = _pool.GetObject();
         item.gameObject.SetActive(true);
-        item.transform.parent = _container;
         item.transform.position = _spawnPoints[randomValue].transform.position;
     }
 }

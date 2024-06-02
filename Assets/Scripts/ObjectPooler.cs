@@ -30,8 +30,8 @@ public class ObjectPooler<T> where T : MonoBehaviour
         if (item == null)
         {
             item = Object.Instantiate(_prefab);
-            _pool.Add(item);
             item.transform.parent = _container;
+            _pool.Add(item);
         }
 
         return item;

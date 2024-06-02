@@ -1,28 +1,20 @@
 using System;
 using System.Collections.Generic;
-using System.Net;
 using UnityEngine;
 
 [RequireComponent(typeof(Searcher), typeof(UnitSpawner), typeof(ScoreCounter))]
 public class Base : MonoBehaviour
 {
     [SerializeField] private Transform _container;
-    [SerializeField] private Base _prefab;
     [SerializeField] private int _items;
 
-
-    private Vector3 _buildPosition;
     private Searcher _searcher;
     private UnitSpawner _unitSpawner;
-    private int _unitCost = 3;
-    private int _baseCost = 5;
-    private bool _buildingTask = false;
-
     private List<Item> _itemsFound = new List<Item>();
     private List<Unit> _units = new List<Unit>();
+    private int _unitCost = 3;
 
     public event Action<int> ScoreChanged;
-    public event Action BuildFinished;
 
     private void Awake()
     {
@@ -43,31 +35,15 @@ public class Base : MonoBehaviour
     private void Update()
     {
         CollectingTask();
-
-        if (_buildingTask == false)
-            CreateUnit();
-
-        if (_buildingTask == true)
-            BuildingTask(_buildPosition);
-    }
-
-    public void StartBuildingTask(Vector3 builtPosition)
-    {
-        _buildingTask = true;
-        _buildPosition = builtPosition;
+        CreateUnit();
     }
 
     public void FinishItemDelivery(Unit unit, Item item)
     {
-        AddUnit(unit);
-        AddItem();
+        _units.Add(unit);
+        _items++;
+        ScoreChanged?.Invoke(_items);
         ReturnToPool(item);
-    }
-
-    private void Initialize(Transform container, Base prefab)
-    {
-        _container = container;
-        _prefab = prefab;
     }
 
     private void CollectingTask()
@@ -82,26 +58,10 @@ public class Base : MonoBehaviour
             StartItemDelivery(unit, item);
     }
 
-    private void BuildingTask(Vector3 buildPosition)
-    {
-        if (_items < _baseCost)
-            return;
-
-        _items -= _baseCost;
-
-        Base newBase = Instantiate(_prefab, buildPosition, Quaternion.identity);
-        newBase.Initialize(_container, _prefab);
-        newBase.ScoreChanged?.Invoke(_items);
-
-        BuildFinished?.Invoke();
-
-        _buildingTask = false;
-    }
-
     private void StartItemDelivery(Unit unit, Item item)
     {
-        RemoveUnit(unit);
-        RemoveFoundItem(item);
+        _units.Remove(unit);
+        _itemsFound.Remove(item);
         unit.SetDeliveryTask(item);
     }
 
@@ -112,11 +72,6 @@ public class Base : MonoBehaviour
         item.ResetFoundStatus();
     }
 
-    private T GetFreeObject<T>(List<T> list) where T : class
-    {
-        return list.Count > 0 ? list[0] : null;
-    }
-
     private void CreateUnit()
     {
         if (_items < _unitCost)
@@ -125,36 +80,19 @@ public class Base : MonoBehaviour
         _items -= _unitCost;
 
         Unit unit = _unitSpawner.SpawnObject();
-        AddUnit(unit);
+        _units.Add(unit);
         unit.SetHomeBase(this);
-
         ScoreChanged?.Invoke(_items);
+    }
+
+    private T GetFreeObject<T>(List<T> list) where T : class
+    {
+        return list.Count > 0 ? list[0] : null;
     }
 
     private void AddFoundItem(Item item)
     {
         _itemsFound.Add(item);
         item.MarkAsFound();
-    }
-
-    private void RemoveFoundItem(Item item)
-    {
-        _itemsFound.Remove(item);
-    }
-
-    private void AddUnit(Unit unit)
-    {
-        _units.Add(unit);
-    }
-
-    private void RemoveUnit(Unit unit)
-    {
-        _units.Remove(unit);
-    }
-
-    private void AddItem()
-    {
-        _items++;
-        ScoreChanged?.Invoke(_items);
     }
 }
