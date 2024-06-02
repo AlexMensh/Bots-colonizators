@@ -5,6 +5,7 @@ public class Selector : MonoBehaviour
 {
     private Camera _camera;
     private Ray _ray;
+    private BaseBuilder _targetBase;
 
     private void Awake()
     {
@@ -24,9 +25,18 @@ public class Selector : MonoBehaviour
         if (Physics.Raycast(_ray, out RaycastHit hit) == false)
             return;
 
-        if (hit.collider.TryGetComponent(out Base selectBase))
+        if (hit.collider.TryGetComponent(out BaseBuilder targetBase))
         {
-            
+            _targetBase = targetBase;
+            _targetBase.SelectBase();
+        }
+
+        if (hit.collider.TryGetComponent(out Ground targetGround))
+        {
+            if (_targetBase != null)
+            {
+                _targetBase.PlaceFlag(hit.point);
+            }
         }
     }
 }

@@ -6,21 +6,21 @@ public class ScoreCounter : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _scoreText;
 
-    private Base _homeBase;
+    private BaseGatherer _baseGatherer;
 
     private void Awake()
     {
-        _homeBase = GetComponent<Base>();
+        _baseGatherer = GetComponent<BaseGatherer>();
     }
 
     private void OnEnable()
     {
-        _homeBase.ScoreChanged += SetValue;
+        _baseGatherer.ScoreChanged += SetValue;
     }
 
     private void OnDisable()
     {
-        _homeBase.ScoreChanged -= SetValue;
+        _baseGatherer.ScoreChanged -= SetValue;
     }
 
     public void SetValue(int value)

@@ -12,11 +12,11 @@ public class BaseSpawner : MonoBehaviour
         _pool = new ObjectPooler<Base>(_prefab, _container);
     }
 
-    public Base SpawnObject()
+    public Base SpawnObject(Vector3 position)
     {
         Base newBase = _pool.GetObject();
         newBase.gameObject.SetActive(true);
-        newBase.transform.position = transform.position;
+        newBase.transform.position = position;
 
         return newBase;
     }
