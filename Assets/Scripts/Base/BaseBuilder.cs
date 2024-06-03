@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-[RequireComponent(typeof(BaseSpawner), typeof(BaseGatherer))]
+[RequireComponent(typeof(BaseGatherer))]
 public class BaseBuilder : MonoBehaviour
 {
     [SerializeField] private Flag _flag;
@@ -19,8 +19,15 @@ public class BaseBuilder : MonoBehaviour
 
     private void Start()
     {
-        _spawner = GetComponent<BaseSpawner>();
         _gatherer = GetComponent<BaseGatherer>();
+    }
+
+    public void SelecSpawner(BaseSpawner baseSpawner)
+    {
+        if (baseSpawner != null)
+        {
+            _spawner = baseSpawner;
+        }
     }
 
     public void SelectBase()

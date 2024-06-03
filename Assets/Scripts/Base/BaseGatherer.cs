@@ -93,9 +93,11 @@ public class BaseGatherer : MonoBehaviour
             _requestedBase = null;
             _isHaveRequest = false;
         }
+
+        item.MarkAsFound();
+        unit.SetDeliveryTask(item);
         _units.Remove(unit);
         _itemsFound.Remove(item);
-        unit.SetDeliveryTask(item);
     }
 
     private void ReturnToPool(Item item)
@@ -113,7 +115,6 @@ public class BaseGatherer : MonoBehaviour
     private void AddFoundItem(Item item)
     {
         _itemsFound.Add(item);
-        item.MarkAsFound();
     }
 
     private void SetRequestData(Base requestedBase, int baseCost)

@@ -3,6 +3,8 @@ using UnityEngine;
 [RequireComponent(typeof(Camera))]
 public class Selector : MonoBehaviour
 {
+    [SerializeField] private BaseSpawner _spawner;
+
     private Camera _camera;
     private Ray _ray;
     private BaseBuilder _targetBase;
@@ -28,6 +30,7 @@ public class Selector : MonoBehaviour
         if (hit.collider.TryGetComponent(out BaseBuilder targetBase))
         {
             _targetBase = targetBase;
+            _targetBase.SelecSpawner(_spawner);
             _targetBase.SelectBase();
         }
 
