@@ -6,12 +6,14 @@ public class BaseBuilder : MonoBehaviour
 {
     [SerializeField] private Flag _flag;
 
+    private Base _newBase;
     private BaseSpawner _spawner;
     private BaseGatherer _gatherer;
     private int _baseCost = 5;
 
     public event Action BuildStarted;
     public event Action BuildFinished;
+    public event Action<Base, int> UnitRequested;
 
     public bool IsSelected { get; private set; } = false;
 
@@ -41,7 +43,8 @@ public class BaseBuilder : MonoBehaviour
         if (_gatherer.Items < _baseCost)
             return;
 
-        _spawner.SpawnObject(_flag.transform.position);
+        _newBase = _spawner.SpawnObject(_flag.transform.position);
+        UnitRequested?.Invoke(_newBase, _baseCost);
 
         FinishBuild();
     }
@@ -50,6 +53,7 @@ public class BaseBuilder : MonoBehaviour
     {
         _flag.gameObject.SetActive(false);
         _flag.transform.position = transform.position;
+        _newBase = null;
         IsSelected = false;
         BuildFinished?.Invoke();
     }

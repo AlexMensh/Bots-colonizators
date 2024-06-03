@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Base), typeof(Searcher), typeof(UnitSpawner))]
+[RequireComponent(typeof(BaseBuilder))]
 public class BaseGatherer : MonoBehaviour
 {
     [SerializeField] private int _items;
@@ -11,9 +12,13 @@ public class BaseGatherer : MonoBehaviour
     private BaseBuilder _builder;
     private Searcher _searcher;
     private UnitSpawner _unitSpawner;
+    private int _unitCost = 3;
+
     private List<Item> _itemsFound = new List<Item>();
     private List<Unit> _units = new List<Unit>();
-    private int _unitCost = 3;
+
+    private bool _isHaveRequest;
+    private Base _requestedBase;
 
     public int Items { get { return _items; } }
 
@@ -22,6 +27,7 @@ public class BaseGatherer : MonoBehaviour
     private void Awake()
     {
         _base = GetComponent<Base>();
+        _builder = GetComponent<BaseBuilder>();
         _searcher = GetComponent<Searcher>();
         _unitSpawner = GetComponent<UnitSpawner>();
     }
@@ -29,11 +35,13 @@ public class BaseGatherer : MonoBehaviour
     private void OnEnable()
     {
         _searcher.ItemFound += AddFoundItem;
+        _builder.UnitRequested += SetRequestData;
     }
 
     private void OnDisable()
     {
         _searcher.ItemFound -= AddFoundItem;
+        _builder.UnitRequested -= SetRequestData;
     }
 
     private void Update()
@@ -76,6 +84,12 @@ public class BaseGatherer : MonoBehaviour
 
     private void StartItemDelivery(Unit unit, Item item)
     {
+        if (_isHaveRequest && _requestedBase != null)
+        {
+            unit.SetHomeBase(_requestedBase);
+            _requestedBase = null;
+            _isHaveRequest = false;
+        }
         _units.Remove(unit);
         _itemsFound.Remove(item);
         unit.SetDeliveryTask(item);
@@ -97,5 +111,13 @@ public class BaseGatherer : MonoBehaviour
     {
         _itemsFound.Add(item);
         item.MarkAsFound();
+    }
+
+    private void SetRequestData(Base requestedBase, int baseCost)
+    {
+        _isHaveRequest = true;
+        _requestedBase = requestedBase;
+        _items -= baseCost;
+        ScoreChanged?.Invoke(_items);
     }
 }

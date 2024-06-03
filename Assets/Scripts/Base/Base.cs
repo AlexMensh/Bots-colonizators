@@ -29,19 +29,12 @@ public class Base : MonoBehaviour
     private void Update()
     {
         if (_isBuildPriority == false)
-        {
             _gatherer.CreateUnit();
-        }
         else
-        {
             _builder.BuildBase();
-        }
     }
 
-    public BaseGatherer GetBaseGatherer()
-    {
-        return _gatherer;
-    }
+    public BaseGatherer GetBaseGatherer() => _gatherer;
 
     private void ChangeBuildPriority()
     {
