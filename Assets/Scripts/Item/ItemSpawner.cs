@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class ItemSpawner : MonoBehaviour
 {
-    [SerializeField] private Transform _container;
     [SerializeField] private Item _prefab;
 
     [SerializeField] private List<SpawnPoint> _spawnPoints;
@@ -14,7 +13,7 @@ public class ItemSpawner : MonoBehaviour
 
     private void Awake()
     {
-        _pool = new ObjectPooler<Item>(_prefab, _container);
+        _pool = new ObjectPooler<Item>(_prefab);
     }
 
     private void Start()

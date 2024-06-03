@@ -255,7 +255,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c12d7d30bbd1419479452f60a5e7ac3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _container: {fileID: 1464114888}
+  _container: {fileID: 0}
   _prefab: {fileID: 5131932051372256265, guid: 94653093a68bdc94cbabc6d299cd418c, type: 3}
   _spawnPoints:
   - {fileID: 2090401812}
@@ -1648,37 +1648,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 195ca503778014b47a41ee51668dab84, type: 3}
---- !u!1 &1464114887
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1464114888}
-  m_Layer: 0
-  m_Name: Container
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1464114888
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1464114887}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -8.725864, y: -12.941657, z: 16.480652}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1465761356
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2503,7 +2472,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e96f70e92b9b6b14c91c457fbafa1c69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _container: {fileID: 1464114888}
+  _container: {fileID: 0}
   _prefab: {fileID: 6039449169453662174, guid: 1a06af623a4c2a048b7b02d5615bc4fb, type: 3}
 --- !u!23 &1316852063511484987
 MeshRenderer:
@@ -2705,7 +2674,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 398dd28864c05bc4091f0e6caf55ff47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _container: {fileID: 1464114888}
+  _container: {fileID: 0}
   _items: 9
 --- !u!114 &3296484917878367957
 MonoBehaviour:
@@ -2941,7 +2910,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6dfff4076088e0641bff984cf550444e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _container: {fileID: 1464114888}
+  _container: {fileID: 0}
   _prefab: {fileID: 4136175016692745173, guid: fd09abef3fab85945b3504ed2aaee311, type: 3}
 --- !u!4 &7875868573372812915
 Transform:
@@ -3101,5 +3070,4 @@ SceneRoots:
   - {fileID: 1896127232}
   - {fileID: 5211041876167826024}
   - {fileID: 200277620}
-  - {fileID: 1464114888}
   - {fileID: 2073251602}

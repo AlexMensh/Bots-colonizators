@@ -3,15 +3,13 @@ using UnityEngine;
 
 public class ObjectPooler<T> where T : MonoBehaviour
 {
-    private Transform _container;
     private T _prefab;
 
     private List<T> _pool = new List<T>();
 
-    public ObjectPooler(T prefab, Transform container)
+    public ObjectPooler(T prefab)
     {
         _prefab = prefab;
-        _container = container;
     }
 
     public T GetObject()
@@ -30,7 +28,6 @@ public class ObjectPooler<T> where T : MonoBehaviour
         if (item == null)
         {
             item = Object.Instantiate(_prefab);
-            item.transform.parent = _container;
             _pool.Add(item);
         }
 

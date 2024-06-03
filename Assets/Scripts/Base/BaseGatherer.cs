@@ -5,7 +5,6 @@ using UnityEngine;
 [RequireComponent(typeof(Base), typeof(Searcher), typeof(UnitSpawner))]
 public class BaseGatherer : MonoBehaviour
 {
-    [SerializeField] private Transform _container;
     [SerializeField] private int _items;
 
     private Base _base;
@@ -85,7 +84,7 @@ public class BaseGatherer : MonoBehaviour
     private void ReturnToPool(Item item)
     {
         item.gameObject.SetActive(false);
-        item.transform.parent = _container.transform;
+        item.transform.parent = null;
         item.ResetFoundStatus();
     }
 
