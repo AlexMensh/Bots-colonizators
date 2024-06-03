@@ -13,6 +13,7 @@ public class BaseGatherer : MonoBehaviour
     private Searcher _searcher;
     private UnitSpawner _unitSpawner;
     private int _unitCost = 3;
+    private int _unitsAvailable;
 
     private List<Item> _itemsFound = new List<Item>();
     private List<Unit> _units = new List<Unit>();
@@ -67,6 +68,7 @@ public class BaseGatherer : MonoBehaviour
             return;
 
         _items -= _unitCost;
+        _unitsAvailable++;
 
         Unit unit = _unitSpawner.SpawnObject();
         _units.Add(unit);
@@ -84,9 +86,10 @@ public class BaseGatherer : MonoBehaviour
 
     private void StartItemDelivery(Unit unit, Item item)
     {
-        if (_isHaveRequest && _requestedBase != null)
+        if (_isHaveRequest && _requestedBase != null && _unitsAvailable > 0)
         {
             unit.SetHomeBase(_requestedBase);
+            _unitsAvailable--;
             _requestedBase = null;
             _isHaveRequest = false;
         }
