@@ -86,12 +86,13 @@ public class BaseGatherer : MonoBehaviour
 
     private void StartItemDelivery(Unit unit, Item item)
     {
-        if (_isHaveRequest && _requestedBase != null && _unitsAvailable > 0)
+        if (_isHaveRequest && _unitsAvailable > 0)
         {
+            _isHaveRequest = false;
+            _builder.SelectBuilderUnit(unit);
             unit.SetHomeBase(_requestedBase);
             _unitsAvailable--;
             _requestedBase = null;
-            _isHaveRequest = false;
         }
 
         item.MarkAsFound();

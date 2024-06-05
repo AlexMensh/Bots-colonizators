@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(BaseGatherer))]
@@ -9,7 +10,10 @@ public class BaseBuilder : MonoBehaviour
     private Base _newBase;
     private BaseSpawner _spawner;
     private BaseGatherer _gatherer;
+    private Coroutine _buildCoroutine;
+    private Unit _builderUnit;
     private int _baseCost = 5;
+    private float _interactionDistance = 5f;
 
     public event Action BuildStarted;
     public event Action BuildFinished;
@@ -17,12 +21,12 @@ public class BaseBuilder : MonoBehaviour
 
     public bool IsSelected { get; private set; } = false;
 
-    private void Start()
+    private void Awake()
     {
         _gatherer = GetComponent<BaseGatherer>();
     }
 
-    public void SelecSpawner(BaseSpawner baseSpawner)
+    public void SelectSpawner(BaseSpawner baseSpawner)
     {
         if (baseSpawner != null)
         {
@@ -35,12 +39,19 @@ public class BaseBuilder : MonoBehaviour
         IsSelected = true;
     }
 
+    public void SelectBuilderUnit(Unit unit)
+    {
+        _builderUnit = unit;
+    }
+
     public void PlaceFlag(Vector3 position)
     {
         if (IsSelected)
         {
             _flag.gameObject.SetActive(true);
             _flag.transform.position = position;
+            _builderUnit = null;
+            _newBase = null;
             BuildStarted?.Invoke();
         }
     }
@@ -51,17 +62,46 @@ public class BaseBuilder : MonoBehaviour
             return;
 
         _newBase = _spawner.SpawnObject(_flag.transform.position);
+
         UnitRequested?.Invoke(_newBase, _baseCost);
 
-        FinishBuild();
+        _newBase.gameObject.SetActive(false);
+
+        if (_builderUnit != null)
+            _buildCoroutine = StartCoroutine(MonitorUnitPosition());
+        
+
+    }
+
+    private void RemoveFlag()
+    {
+        _flag.gameObject.SetActive(false);
+        _flag.transform.position = transform.position;
     }
 
     private void FinishBuild()
     {
-        _flag.gameObject.SetActive(false);
-        _flag.transform.position = transform.position;
+        _newBase.gameObject.SetActive(true);
+        BuildFinished?.Invoke();
         _newBase = null;
         IsSelected = false;
-        BuildFinished?.Invoke();
+        RemoveFlag();
+
+
+        if (_buildCoroutine != null)
+        {
+            StopCoroutine(_buildCoroutine);
+            _buildCoroutine = null;
+        }
+    }
+
+    private IEnumerator MonitorUnitPosition()
+    {
+        while (Vector3.Distance(_builderUnit.transform.position, _flag.transform.position) > _interactionDistance)
+        {
+            yield return null;
+        }
+
+        FinishBuild();
     }
 }

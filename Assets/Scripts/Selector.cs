@@ -30,7 +30,7 @@ public class Selector : MonoBehaviour
         if (hit.collider.TryGetComponent(out BaseBuilder targetBase))
         {
             _targetBase = targetBase;
-            _targetBase.SelecSpawner(_spawner);
+            _targetBase.SelectSpawner(_spawner);
             _targetBase.SelectBase();
         }
 
