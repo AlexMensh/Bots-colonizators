@@ -73,7 +73,7 @@ public class UnitTaskHandler : MonoBehaviour
         if (checkDistance > _interactionDistance)
             return;
 
-        _unit.HomeBase.GetBaseGatherer().FinishItemDelivery(_unit, _item);
+        _unit.HomeBase.FinishItemDelivery(_unit, _item);
         _item = null;
         _isEquipped = false;
         _isActive = false;

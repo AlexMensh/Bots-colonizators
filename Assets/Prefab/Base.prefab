@@ -139,7 +139,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _flag: {fileID: 408903025311658406}
-  basePrefabPath: Prefabs/Base.prefab
 --- !u!114 &5918433778790693759
 MonoBehaviour:
   m_ObjectHideFlags: 0

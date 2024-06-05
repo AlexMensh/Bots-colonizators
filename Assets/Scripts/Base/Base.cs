@@ -7,6 +7,7 @@ public class Base : MonoBehaviour
     private BaseBuilder _builder;
 
     private bool _isBuildPriority = false;
+    public BaseGatherer Gatherer => _gatherer;
 
     private void Awake()
     {
@@ -16,14 +17,14 @@ public class Base : MonoBehaviour
 
     private void OnEnable()
     {
-        _builder.BuildStarted += ChangeBuildPriority;
-        _builder.BuildFinished += ChangeBuildPriority;
+        _builder.BuildTaskStarted += ChangeBuildPriority;
+        _builder.BuildTaskFinished += ChangeBuildPriority;
     }
 
     private void OnDisable()
     {
-        _builder.BuildStarted -= ChangeBuildPriority;
-        _builder.BuildFinished -= ChangeBuildPriority;
+        _builder.BuildTaskStarted -= ChangeBuildPriority;
+        _builder.BuildTaskFinished -= ChangeBuildPriority;
     }
 
     private void Update()
@@ -33,8 +34,6 @@ public class Base : MonoBehaviour
         else
             _builder.BuildBase();
     }
-
-    public BaseGatherer GetBaseGatherer() => _gatherer;
 
     private void ChangeBuildPriority()
     {

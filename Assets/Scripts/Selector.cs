@@ -34,7 +34,7 @@ public class Selector : MonoBehaviour
             _targetBase.SelectBase();
         }
 
-        if (hit.collider.TryGetComponent(out Ground targetGround))
+        if (hit.collider.TryGetComponent<Ground>(out _))
         {
             if (_targetBase != null)
             {

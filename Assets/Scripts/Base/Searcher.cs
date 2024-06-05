@@ -38,7 +38,7 @@ public class Searcher : MonoBehaviour
 
             foreach (var detected in detectedItems)
             {
-                if (detected.TryGetComponent(out Item item) && item.IsFound == false)
+                if (detected.TryGetComponent(out Item item))
                 {
                     ItemFound?.Invoke(item);
                 }

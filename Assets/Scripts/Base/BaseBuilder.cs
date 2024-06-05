@@ -11,15 +11,14 @@ public class BaseBuilder : MonoBehaviour
     private BaseSpawner _spawner;
     private BaseGatherer _gatherer;
     private Coroutine _buildCoroutine;
-    private Unit _builderUnit;
+
     private int _baseCost = 5;
     private float _interactionDistance = 5f;
+    private bool _isSelected = false;
 
-    public event Action BuildStarted;
-    public event Action BuildFinished;
+    public event Action BuildTaskStarted;
+    public event Action BuildTaskFinished;
     public event Action<Base, int> UnitRequested;
-
-    public bool IsSelected { get; private set; } = false;
 
     private void Awake()
     {
@@ -28,31 +27,24 @@ public class BaseBuilder : MonoBehaviour
 
     public void SelectSpawner(BaseSpawner baseSpawner)
     {
-        if (baseSpawner != null)
-        {
-            _spawner = baseSpawner;
-        }
+        _spawner = baseSpawner;
     }
 
     public void SelectBase()
     {
-        IsSelected = true;
-    }
-
-    public void SelectBuilderUnit(Unit unit)
-    {
-        _builderUnit = unit;
+        _isSelected = true;
     }
 
     public void PlaceFlag(Vector3 position)
     {
-        if (IsSelected)
+        if (_isSelected)
         {
             _flag.gameObject.SetActive(true);
             _flag.transform.position = position;
-            _builderUnit = null;
+
             _newBase = null;
-            BuildStarted?.Invoke();
+
+            BuildTaskStarted?.Invoke();
         }
     }
 
@@ -67,10 +59,12 @@ public class BaseBuilder : MonoBehaviour
 
         _newBase.gameObject.SetActive(false);
 
-        if (_builderUnit != null)
-            _buildCoroutine = StartCoroutine(MonitorUnitPosition());
-        
+        BuildTaskFinished?.Invoke();
+    }
 
+    public void SentUnit(Unit unit)
+    {
+        _buildCoroutine = StartCoroutine(MonitorUnitPosition(unit));
     }
 
     private void RemoveFlag()
@@ -82,11 +76,10 @@ public class BaseBuilder : MonoBehaviour
     private void FinishBuild()
     {
         _newBase.gameObject.SetActive(true);
-        BuildFinished?.Invoke();
         _newBase = null;
-        IsSelected = false;
-        RemoveFlag();
+        _isSelected = false;
 
+        RemoveFlag();
 
         if (_buildCoroutine != null)
         {
@@ -95,9 +88,9 @@ public class BaseBuilder : MonoBehaviour
         }
     }
 
-    private IEnumerator MonitorUnitPosition()
+    private IEnumerator MonitorUnitPosition(Unit unit)
     {
-        while (Vector3.Distance(_builderUnit.transform.position, _flag.transform.position) > _interactionDistance)
+        while (Vector3.Distance(unit.transform.position, _flag.transform.position) > _interactionDistance)
         {
             yield return null;
         }

@@ -5,7 +5,7 @@ public class Unit : MonoBehaviour
 {
     private UnitTaskHandler _unitTaskHandler;
 
-    public Base HomeBase { get; private set; }
+    public BaseGatherer HomeBase { get; private set; }
 
     private void Start()
     {
@@ -14,7 +14,7 @@ public class Unit : MonoBehaviour
 
     public void SetHomeBase(Base homeBase)
     {
-        HomeBase = homeBase;
+        HomeBase = homeBase.Gatherer;
     }
 
     public void SetDeliveryTask(Item item)
