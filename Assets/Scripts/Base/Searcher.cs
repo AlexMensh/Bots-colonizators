@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Searcher : MonoBehaviour
@@ -8,9 +9,10 @@ public class Searcher : MonoBehaviour
     [SerializeField] private float _searchDelay;
     [SerializeField] private LayerMask _itemLayerMask;
 
-    private Coroutine _searchItems;
+    private List<Item> _itemsFound = new List<Item>();
+    private HashSet<Item> _foundMarker = new HashSet<Item>();
 
-    public event Action<Item> ItemFound;
+    private Coroutine _searchItems;
 
     private void OnEnable()
     {
@@ -22,10 +24,35 @@ public class Searcher : MonoBehaviour
         StopCoroutine(_searchItems);
     }
 
+    public Item GetItem()
+    {
+        if (_itemsFound.Count > 0)
+        {
+            Item item = _itemsFound[0];
+            _itemsFound.Remove(item);
+            return item;
+        }
+        return null;
+    }
+
+    public void ResetItemStatus(Item item)
+    {
+        _foundMarker.Remove(item);
+    }
+
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, _searchRadius);
+    }
+
+    private void AddFoundItem(Item item)
+    {
+        if (_foundMarker.Contains(item) == false)
+        {
+            _foundMarker.Add(item);
+            _itemsFound.Add(item);
+        }
     }
 
     private IEnumerator SearchItems()
@@ -38,12 +65,16 @@ public class Searcher : MonoBehaviour
 
             foreach (var detected in detectedItems)
             {
+                if (detected.TryGetComponent(out BaseGatherer gatherer))
+                {
+                    gatherer.SetSeracher(this);
+                }
+
                 if (detected.TryGetComponent(out Item item))
                 {
-                    ItemFound?.Invoke(item);
+                    AddFoundItem(item);
                 }
             }
-
             yield return wait;
         }
     }

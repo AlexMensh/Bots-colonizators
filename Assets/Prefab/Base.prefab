@@ -19,7 +19,7 @@ GameObject:
   - component: {fileID: 5765233117709768581}
   - component: {fileID: 8340089525514331573}
   - component: {fileID: 1925530577611830198}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -220,7 +220,7 @@ GameObject:
   - component: {fileID: 6160133612562683581}
   - component: {fileID: 243533489966378152}
   - component: {fileID: 332616981782414513}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: UnitCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -321,7 +321,7 @@ GameObject:
   - component: {fileID: 8470520195608266225}
   - component: {fileID: 4219848177093568020}
   - component: {fileID: 3316471919042432735}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -452,6 +452,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3908647762759615331}
     m_Modifications:
+    - target: {fileID: 1050760449610404497, guid: 1f6e0de40520b0042b1b5d5a8fa4e82a, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 1320448348541734266, guid: 1f6e0de40520b0042b1b5d5a8fa4e82a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -495,6 +499,14 @@ PrefabInstance:
     - target: {fileID: 2596795927142122696, guid: 1f6e0de40520b0042b1b5d5a8fa4e82a, type: 3}
       propertyPath: m_Name
       value: Flag
+      objectReference: {fileID: 0}
+    - target: {fileID: 2596795927142122696, guid: 1f6e0de40520b0042b1b5d5a8fa4e82a, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6108277708927883335, guid: 1f6e0de40520b0042b1b5d5a8fa4e82a, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

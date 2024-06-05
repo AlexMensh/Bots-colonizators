@@ -7,7 +7,7 @@ public class BaseSpawner : MonoBehaviour
     public Base SpawnObject(Vector3 position)
     {
         Base newBase = Instantiate(_prefab, position, Quaternion.identity);
-        
+
         return newBase;
     }
 }

@@ -2,15 +2,14 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Base), typeof(Searcher), typeof(UnitSpawner))]
-[RequireComponent(typeof(BaseBuilder))]
+[RequireComponent(typeof(Base), typeof(BaseBuilder), typeof(UnitSpawner))]
 public class BaseGatherer : MonoBehaviour
 {
     [SerializeField] private int _items;
 
+    private Searcher _searcher;
     private Base _base;
     private BaseBuilder _builder;
-    private Searcher _searcher;
     private UnitSpawner _unitSpawner;
     private int _unitCost = 3;
     private int _unitsAvailable;
@@ -19,9 +18,6 @@ public class BaseGatherer : MonoBehaviour
     private Base _requestedBase;
 
     private List<Unit> _units = new List<Unit>();
-    private List<Item> _itemsFound = new List<Item>();
-    private HashSet<Item> _foundMarker = new HashSet<Item>();
-    private HashSet<Item> _assignedItems = new HashSet<Item>();
 
     public int Items => _items;
 
@@ -31,26 +27,27 @@ public class BaseGatherer : MonoBehaviour
     {
         _base = GetComponent<Base>();
         _builder = GetComponent<BaseBuilder>();
-        _searcher = GetComponent<Searcher>();
         _unitSpawner = GetComponent<UnitSpawner>();
     }
 
     private void OnEnable()
     {
-        _searcher.ItemFound += AddFoundItem;
         _builder.UnitRequested += SetRequestData;
     }
 
     private void OnDisable()
     {
-        _searcher.ItemFound -= AddFoundItem;
         _builder.UnitRequested -= SetRequestData;
     }
 
     private void Update()
     {
-        if (_itemsFound.Count > 0 && _units.Count > 0)
-            StartItemDelivery(GetFreeObject(_units), GetFreeObject(_itemsFound));
+        GatheringItems();
+    }
+
+    public void SetSeracher(Searcher searcher)
+    {
+        _searcher = searcher;
     }
 
     public void CreateUnit()
@@ -76,6 +73,14 @@ public class BaseGatherer : MonoBehaviour
         ScoreChanged?.Invoke(_items);
     }
 
+    private void GatheringItems()
+    {
+        Item item = _searcher.GetItem();
+
+        if (item != null && _units.Count > 0)
+            StartItemDelivery(GetFreeObject(_units), item);
+    }
+
     private void StartItemDelivery(Unit unit, Item item)
     {
         if (_isHaveRequest && _unitsAvailable > 0)
@@ -87,7 +92,6 @@ public class BaseGatherer : MonoBehaviour
             _requestedBase = null;
         }
 
-        _assignedItems.Add(item);
         unit.SetDeliveryTask(item);
     }
 
@@ -95,8 +99,7 @@ public class BaseGatherer : MonoBehaviour
     {
         item.gameObject.SetActive(false);
         item.transform.parent = null;
-        _foundMarker.Remove(item);
-        _assignedItems.Remove(item);
+        _searcher.ResetItemStatus(item);
     }
 
     private T GetFreeObject<T>(List<T> list) where T : class
@@ -108,15 +111,6 @@ public class BaseGatherer : MonoBehaviour
             return freeObject;
         }
         return null;
-    }
-
-    private void AddFoundItem(Item item)
-    {
-        if (_foundMarker.Contains(item) == false)
-        {
-            _foundMarker.Add(item);
-            _itemsFound.Add(item);
-        }
     }
 
     private void SetRequestData(Base requestedBase, int baseCost)
